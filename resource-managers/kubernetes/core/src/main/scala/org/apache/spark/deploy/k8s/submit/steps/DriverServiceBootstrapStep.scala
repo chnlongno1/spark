@@ -25,6 +25,7 @@ import org.apache.spark.deploy.k8s.Config._
 import org.apache.spark.deploy.k8s.Constants._
 import org.apache.spark.deploy.k8s.submit.KubernetesDriverSpec
 import org.apache.spark.internal.Logging
+import org.apache.spark.ui.SparkUI
 import org.apache.spark.util.Clock
 
 /**
@@ -67,7 +68,8 @@ private[spark] class DriverServiceBootstrapStep(
         .withName(resolvedServiceName)
         .endMetadata()
       .withNewSpec()
-        .withClusterIP("None")
+        .withType("NodePort")
+//        .withClusterIP("None")
         .withSelector(driverLabels.asJava)
         .addNewPort()
           .withName(DRIVER_PORT_NAME)
@@ -78,6 +80,11 @@ private[spark] class DriverServiceBootstrapStep(
           .withName(BLOCK_MANAGER_PORT_NAME)
           .withPort(driverBlockManagerPort)
           .withNewTargetPort(driverBlockManagerPort)
+          .endPort()
+        .addNewPort()
+          .withName("spark-ui-port-name")
+          .withPort(SparkUI.DEFAULT_PORT)
+          .withNewTargetPort(SparkUI.DEFAULT_PORT)
           .endPort()
         .endSpec()
       .build()

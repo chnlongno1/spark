@@ -821,14 +821,14 @@ object SparkSubmit extends CommandLineUtils with Logging {
       childMainClass: String,
       verbose: Boolean): Unit = {
     // scalastyle:off println
-    if (verbose) {
+//    if (verbose) {
       printStream.println(s"Main class:\n$childMainClass")
       printStream.println(s"Arguments:\n${childArgs.mkString("\n")}")
       // sysProps may contain sensitive information, so redact before printing
       printStream.println(s"Spark config:\n${Utils.redact(sparkConf.getAll.toMap).mkString("\n")}")
       printStream.println(s"Classpath elements:\n${childClasspath.mkString("\n")}")
       printStream.println("\n")
-    }
+//    }
     // scalastyle:on println
 
     val loader =
