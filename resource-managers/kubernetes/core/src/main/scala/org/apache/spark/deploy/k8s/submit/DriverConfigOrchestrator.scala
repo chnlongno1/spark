@@ -52,7 +52,7 @@ private[spark] class DriverConfigOrchestrator(
   // application the user submitted.
   private val kubernetesResourceNamePrefix = {
     val uuid = UUID.nameUUIDFromBytes(Longs.toByteArray(launchTime)).toString.replaceAll("-", "")
-    s"$appName-$uuid".toLowerCase.replaceAll("\\.", "-")
+    s"$appName-$uuid".toLowerCase.replaceAll("\\.", "-").substring(0, 5)
   }
 
   private val imagePullPolicy = sparkConf.get(CONTAINER_IMAGE_PULL_POLICY)
